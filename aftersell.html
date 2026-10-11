@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>After Sell - ประวัติการขาย</title>
+<link rel="stylesheet" href="aftersell.css">
+</head>
+<body>
+
+<header class="as-header">
+  <div class="header-left">
+    <button id="homeBtn" class="btn-small" onclick="window.location.href='home.html'">Home</button>
+    <button id="backToSellBtn" class="btn-small">← กลับหน้าร้าน</button>
+  </div>
+  <div class="store-title">
+    <img id="storeCoverImg" src="" alt="store">
+    <h1 id="storeNameTitle">ชื่อร้านค้า</h1>
+  </div>
+</header>
+
+<section class="creator-summary-section">
+  <h2>💰 สรุปรายรับแยกตาม Creator</h2>
+  <table class="summary-table" id="creatorSummaryTable">
+    <thead><tr><th>Creator</th><th>จำนวนที่ขายได้</th><th>รายรับรวม</th></tr></thead>
+    <tbody id="creatorSummaryBody"></tbody>
+  </table>
+</section>
+
+<section class="sales-list-section">
+  <h2>🧾 ประวัติการขายทั้งหมด</h2>
+  <div id="salesListContainer" class="sales-list"></div>
+</section>
+
+<!-- Modal: รายละเอียดบิล -->
+<div class="modal-overlay hidden" id="receiptDetailModal">
+  <div class="modal-card">
+    <h3>รายละเอียดบิลการขาย</h3>
+    <table class="detail-table">
+      <thead>
+        <tr><th>วันที่</th><th>เวลา</th><th>สินค้า</th><th>Creator</th><th>จำนวน</th><th>รายรับ</th><th>การจ่าย</th><th>สลิป</th></tr>
+      </thead>
+      <tbody id="receiptDetailBody"></tbody>
+    </table>
+    <div class="modal-actions">
+      <button id="closeReceiptDetailBtn" class="btn-small">ปิด</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="aftersell.js"></script>
+</body>
+</html>

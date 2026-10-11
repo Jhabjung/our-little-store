@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Store Items - Our Little Store</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="item.css">
+</head>
+<body>
+
+<!-- Tab bar ชั้น 1 -->
+<header class="navbar-tier1">
+  <div class="nav-left">
+    <button class="nav-btn" id="homeBtn">🏠 Home</button>
+    <div class="search-box-wrap">
+      <span>🔍</span>
+      <input type="text" id="searchInput" placeholder="Search item, creator, ID...">
+    </div>
+  </div>
+
+  <div class="nav-right">
+    <div class="view-mode-icons" id="viewModeBtn" title="เปลี่ยนรูปแบบการแสดงสินค้า">
+      <span id="viewModeIconLbl">📦 1</span>
+    </div>
+    <button class="nav-btn" id="dropdownToggleBtn" style="display:none;">▼ Menu</button>
+  </div>
+</header>
+
+<!-- แผงข้อมูลร้านแนวตั้ง (เปิดด้วย Dropdown) -->
+<div class="store-info-panel hidden" id="storeInfoPanel">
+  <div><strong>Store ID:</strong> <span id="panelStoreCode">------</span> <button class="btn-small" id="copyCodeBtn" style="padding:2px 6px; font-size:0.75rem;">Copy ID</button></div>
+  <div class="online-users-list">
+    <strong>In store:</strong>
+    <div id="onlineUsersAvatars" style="display:flex; gap:4px;"></div>
+  </div>
+</div>
+
+<!-- Tab bar ชั้น 2 (รายชื่อ Creator เลื่อนได้) -->
+<nav class="navbar-tier2" id="tier2Nav">
+  <button class="tab-item promo-tab-btn" id="promoTabBtn" style="background:#fffae6; border-color:#d4af37;">🏷️ Promotion</button>
+  <button class="tab-item new-item-btn" id="newItemBtn">+ Item</button>
+  <!-- รายชื่อ Creator จะถูก Render ตรงนี้ เรียง A-Z / ก-ฮ -->
+</nav>
+
+<!-- เนื้อหาหลักแสดงรายการสินค้าแบ่งตาม Creator -->
+<main class="item-main-container" id="itemMainContainer">
+  <div class="empty-text">Loading items...</div>
+</main>
+
+<!-- Modal: เพิ่มสินค้าใหม่ (+ Item) -->
+<div class="modal-overlay hidden" id="itemModal">
+  <div class="modal-card" style="max-width:360px;">
+    <h2 style="text-align:center;">New Item</h2>
+    <div class="avatar-wrap" style="border-radius:8px; margin:0 auto;">
+      <img id="itemPhotoPreview" src="https://placehold.co/90/d9d9d9/888888?text=pic" alt="item" style="border-radius:8px;">
+      <button class="avatar-edit-btn" id="itemPhotoEditBtn">✎</button>
+      <input type="file" id="itemPhotoInput" accept="image/*" style="display:none">
+    </div>
+    <input type="text" id="itemNameInput" placeholder="Item name">
+    <input type="text" id="itemIdDisplay" disabled placeholder="Item ID (Auto)">
+    
+    <div style="display:flex; gap:6px;">
+      <select id="creatorSelect" style="flex:1;">
+        <!-- รายชื่อ Creator หรือกด Add Creator -->
+      </select>
+      <button class="btn-small" id="addCreatorPromptBtn">+ Creator</button>
+    </div>
+
+    <div style="display:flex; gap:6px;">
+      <input type="number" id="itemPriceInput" placeholder="Price" style="flex:1;" min="0" step="any">
+      <select id="currencySelect" style="width:100px;">
+        <option value="THB">THB (฿)</option>
+        <option value="USD">USD ($)</option>
+        <option value="JPY">JPY (¥)</option>
+        <option value="EUR">EUR (€)</option>
+      </select>
+    </div>
+
+    <div class="error-msg" id="itemModalError"></div>
+    <div class="modal-actions">
+      <button class="btn-small" id="itemModalCancelBtn">Cancel</button>
+      <button class="btn-small filled" id="itemModalSubmitBtn">Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: เพิ่ม Creator ใหม่ -->
+<div class="modal-overlay hidden" id="creatorModal">
+  <div class="modal-card" style="max-width:300px;">
+    <h2 style="text-align:center;">Add Creator</h2>
+    <input type="text" id="newCreatorNameInput" placeholder="Creator name">
+    <div class="error-msg" id="creatorModalError"></div>
+    <div class="modal-actions">
+      <button class="btn-small" id="creatorCancelBtn">Cancel</button>
+      <button class="btn-small filled" id="creatorSubmitBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="item.js"></script>
+<!-- Modal: Confirm Delete Item -->
+<div class="modal-overlay hidden" id="confirmDeleteItemModal">
+  <div class="modal-card" style="max-width:300px;">
+    <p id="confirmDeleteItemText" style="text-align:center; font-weight:600;"></p>
+    <div class="modal-actions">
+      <button class="btn-small" id="cancelDeleteBtn" data-i18n="cancel">Cancel</button>
+      <button class="btn-small filled" id="okDeleteBtn" style="background:#d33; border-color:#d33;" data-i18n="confirm">Confirm</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal: รายการโปรโมชั่นทั้งหมด (Promotion List Panel) -->
+<div class="modal-overlay hidden" id="promoListModal">
+  <div class="modal-card" style="max-width:500px; width:90%;">
+    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid #333; padding-bottom:8px; margin-bottom:12px;">
+      <h2 style="margin:0;">🏷️ Store Promotions</h2>
+      <button class="btn-small filled" id="openCreatePromoBtn">+ เพิ่ม</button>
+    </div>
+    <div id="promoListContainer" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
+      <!-- รายการโปรโมชั่นจะแสดงที่นี่ -->
+      <div style="text-align:center; color:#777; padding:16px;">ยังไม่มีโปรโมชั่นในระบบ</div>
+    </div>
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="btn-small" id="closePromoListBtn">ปิด</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: สร้าง/แก้ไขโปรโมชั่น (Create Promotion Modal) -->
+<div class="modal-overlay hidden" id="createPromoModal">
+  <div class="modal-card" style="max-width:450px; width:90%;">
+    <h2 style="text-align:center; margin-bottom:12px;">สร้างโปรโมชั่นใหม่</h2>
+    
+    <div style="margin-bottom:10px;">
+      <label style="font-size:0.85rem; font-weight:600;">ลักษณะโปรโมชั่น:</label>
+      <select id="promoModeSelect" style="width:100%; margin-top:4px;">
+        <option value="discount">1. ลดราคา</option>
+        <option value="set">2. ซื้อเป็นเซตถูกกว่า</option>
+        <option value="bogo">3. ซื้อ_แถม_</option>
+      </select>
+    </div>
+
+    <!-- ฟอร์มโหมดที่ 1: ลดราคา -->
+    <div class="promo-form-section" id="formModeDiscount">
+      <div style="margin-bottom:8px;">
+        <label style="font-size:0.85rem;">เลือกสินค้าที่จะลดราคา:</label>
+        <select id="discItemSelect" style="width:100%; margin-top:4px;"></select>
+      </div>
+      <div style="display:flex; gap:8px; margin-bottom:8px;">
+        <div style="flex:1;">
+          <label style="font-size:0.8rem;">ลดราคา (%):</label>
+          <input type="number" id="discPercentInput" placeholder="0" min="0" max="100" style="width:100%;">
+        </div>
+        <div style="flex:1;">
+          <label style="font-size:0.8rem;">หรือ ลด (บาท):</label>
+          <input type="number" id="discAmountInput" placeholder="0" min="0" style="width:100%;">
+        </div>
+      </div>
+      <div style="background:#f9f9f9; padding:8px; border-radius:6px; font-size:0.9rem; border:1px solid #ddd;">
+        <strong>สรุปราคา:</strong> <span id="discSummaryPrice">0</span> บาท
+      </div>
+    </div>
+
+    <!-- ฟอร์มโหมดที่ 2: ซื้อเป็นเซตถูกกว่า -->
+    <div class="promo-form-section hidden" id="formModeSet">
+      <label style="font-size:0.85rem; font-weight:600;">สินค้าในเซต:</label>
+      <div id="setItemsContainer" style="display:flex; flex-direction:column; gap:6px; margin:6px 0;">
+        <!-- รายการสินค้าในเซตจะถูกเพิ่มตรงนี้ -->
+      </div>
+      <button class="btn-small" id="addSetItemRowBtn" style="margin-bottom:10px;">+ เพิ่มสินค้าเข้าเซต</button>
+      
+      <div style="background:#f9f9f9; padding:8px; border-radius:6px; font-size:0.85rem; border:1px solid #ddd; display:flex; flex-direction:column; gap:4px;">
+        <div>ราคาปกติรวม: <span id="setNormalTotal">0</span> บาท</div>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <span>ราคาของเซตนี้:</span>
+          <input type="number" id="setCustomPriceInput" placeholder="ใส่ราคาเซต" style="width:120px; padding:4px;" min="0"> บาท
+        </div>
+        <div style="color:#d33; font-weight:600;">ลดราคาไปทั้งหมด: <span id="setDiscountTotal">0</span> บาท</div>
+      </div>
+    </div>
+
+    <!-- ฟอร์มโหมดที่ 3: ซื้อ_แถม_ -->
+    <div class="promo-form-section hidden" id="formModeBogo">
+      <div style="margin-bottom:8px;">
+        <label style="font-size:0.85rem;">สินค้าที่ซื้อ:</label>
+        <div style="display:flex; gap:6px; margin-top:4px;">
+          <select id="bogoBuyItemSelect" style="flex:2;"></select>
+          <input type="number" id="bogoBuyQtyInput" value="1" min="1" style="flex:1;" placeholder="จำนวน">
+        </div>
+      </div>
+      <div style="margin-bottom:8px;">
+        <label style="font-size:0.85rem;">สินค้าที่แถม:</label>
+        <div style="display:flex; gap:6px; margin-top:4px;">
+          <select id="bogoGetItemSelect" style="flex:2;"></select>
+          <input type="number" id="bogoGetQtyInput" value="1" min="1" style="flex:1;" placeholder="จำนวนแถม">
+        </div>
+      </div>
+      <div style="background:#f9f9f9; padding:8px; border-radius:6px; font-size:0.9rem; border:1px solid #ddd;">
+        <strong>ราคารวม (คิดเฉพาะที่ซื้อ):</strong> <span id="bogoTotalPrice">0</span> บาท
+      </div>
+    </div>
+
+    <div class="error-msg" id="createPromoError" style="color:red; font-size:0.8rem; margin-top:6px;"></div>
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="btn-small" id="cancelCreatePromoBtn">ยกเลิก</button>
+      <button class="btn-small filled" id="savePromoBtn">บันทึกโปรโมชั่น</button>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>

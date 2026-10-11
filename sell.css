@@ -1,0 +1,113 @@
+:root { --color-line: #1a1a1a; }
+* { box-sizing: border-box; }
+body {
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  background: #f4f4f7;
+  padding-bottom: 90px;
+}
+
+.sell-header {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #fff; border-bottom: 2px solid var(--color-line); padding: 10px 16px;
+}
+.store-title { display: flex; align-items: center; gap: 10px; }
+.store-cover-thumb { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--color-line); }
+.store-title h1 { font-size: 1rem; margin: 0; }
+
+.store-status-banner {
+  background: #e6ffe6; color: #1f6b1f; text-align: center; font-weight: 700;
+  padding: 8px; font-size: 0.9rem; border-bottom: 1px solid #2e8b2e;
+}
+
+/* Tab bar ชั้นที่ 2 (เหมือน item.html) */
+.navbar-tier2 {
+  display: flex; gap: 8px; overflow-x: auto; padding: 10px 16px;
+  background: #fff; border-bottom: 1px solid #ddd;
+}
+.tab-item {
+  padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--color-line);
+  background: #fff; font-size: 0.85rem; cursor: pointer; white-space: nowrap;
+}
+.tab-item.active { background: #1a1a1a; color: #fff; }
+
+/* ปุ่มสลับโหมดมุมมอง */
+.view-mode-switch { display: flex; gap: 6px; padding: 0 16px 10px; }
+.mode-btn {
+  padding: 5px 10px; border: 1px solid var(--color-line); border-radius: 4px;
+  background: #fff; cursor: pointer;
+}
+.mode-btn.active { background: #1a1a1a; color: #fff; }
+
+/* เหมือนโครงสร้างการ์ด item.html */
+.creator-section { padding: 0 16px 20px; }
+.creator-section-title {
+  font-weight: 700; padding: 10px 0; display: flex; align-items: center; gap: 6px;
+}
+.items-grid { display: grid; gap: 12px; }
+.items-grid.mode-1 { grid-template-columns: 1fr; }
+.items-grid.mode-2 { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.items-grid.mode-3 { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+
+.item-card {
+  position: relative; background: #fff; border: 1.5px solid var(--color-line);
+  border-radius: 6px; padding: 10px; display: flex; gap: 12px; align-items: center;
+  cursor: pointer; transition: transform 0.15s;
+}
+.item-card:active { transform: scale(0.98); }
+.mode-2 .item-card { flex-direction: column; align-items: stretch; }
+.mode-3 .item-card { flex-direction: row !important; align-items: center !important; }
+
+.item-img-container { position: relative; flex-shrink: 0; width: 70px; height: 70px; }
+.mode-2 .item-img-container { width: 100%; height: 140px; }
+.mode-3 .item-img-container { width: 65px; height: 65px; }
+
+.item-card-img { width: 100%; height: 100%; border-radius: 4px; object-fit: cover; background: #ddd; border: 1px solid #ccc; display: block; }
+
+.item-card-info { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+.item-card-name { font-weight: 700; font-size: 0.95rem; word-break: break-word; }
+.mode-3 .item-card-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.item-card-price { font-size: 0.85rem; color: #d33; font-weight: 700; }
+.item-card-creator { font-size: 0.75rem; color: #888; }
+
+/* ป้าย "+ เพิ่มลงตะกร้า" แทนปุ่มถังขยะเดิม (มุมขวาล่างของรูป) */
+.add-cart-badge {
+  position: absolute; bottom: 4px; right: 4px; width: 26px; height: 26px;
+  background: #2e8b2e; color: #fff; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem; border: 1.5px solid #1f6b1f; box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* บาร์ตะกร้าลอย */
+.cart-floating-bar {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: #1a1a1a; color: #fff; padding: 14px 26px; border-radius: 40px;
+  font-weight: 600; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.3); z-index: 999;
+}
+.hidden { display: none !important; }
+
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center; z-index: 2000;
+}
+.modal-card { background: #fff; border-radius: 10px; padding: 20px; width: 90%; max-width: 480px; max-height: 85vh; overflow-y: auto; }
+.modal-card.narrow { max-width: 340px; text-align: center; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+.btn-small { padding: 8px 14px; border-radius: 6px; border: 1.5px solid var(--color-line); background: #fff; cursor: pointer; font-size: 0.85rem; }
+.btn-small.filled { background: #1a1a1a; color: #fff; }
+
+.qty-stepper { display: flex; justify-content: center; align-items: center; gap: 14px; margin: 16px 0; }
+.step-btn { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--color-line); background: #fff; font-size: 1.2rem; cursor: pointer; }
+.qty-stepper input { width: 60px; text-align: center; font-size: 1.1rem; padding: 6px; }
+.muted-text { color: #777; font-size: 0.85rem; }
+
+.checkout-list { max-height: 220px; overflow-y: auto; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; margin: 10px 0; }
+.checkout-row { display: flex; justify-content: space-between; padding: 6px 2px; font-size: 0.9rem; border-bottom: 1px dashed #eee; }
+.checkout-row.promo-row { color: #d33; }
+.checkout-summary-box { background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; padding: 10px; font-size: 0.9rem; }
+.total-line { font-size: 1.1rem; font-weight: 700; margin-top: 6px; }
+
+#paymentModal select { width: 100%; padding: 8px; margin: 10px 0; }
+#slipUploadContainer { text-align: left; margin-top: 10px; }
+#slipUploadContainer label { font-size: 0.85rem; font-weight: 600; }
+#slipPreviewImg { max-width: 140px; margin-top: 8px; border-radius: 6px; display: block; }

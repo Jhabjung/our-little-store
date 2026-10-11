@@ -1,0 +1,83 @@
+:root { --color-line:#1a1a1a; }
+* { box-sizing: border-box; }
+body {
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  background: #f4f4f7;
+  padding-bottom: 40px;
+}
+.as-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-bottom: 2px solid var(--color-line);
+  padding: 10px 16px;
+}
+.header-left {
+  display: flex;
+  gap: 8px; /* ระยะห่างระหว่างปุ่ม Home กับปุ่มกลับหน้าร้าน */
+}
+.store-title { display: flex; align-items: center; gap: 10px; }
+.store-title img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--color-line); }
+.store-title h1 { font-size: 1rem; margin: 0; }
+
+.creator-summary-section, .sales-list-section {
+  background: #fff;
+  margin: 16px;
+  border-radius: 10px;
+  border: 1.5px solid var(--color-line);
+  padding: 14px;
+}
+.creator-summary-section h2, .sales-list-section h2 { margin-top: 0; font-size: 1.05rem; }
+
+.summary-table, .detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.summary-table th, .summary-table td,
+.detail-table th, .detail-table td {
+  border-bottom: 1px solid #eee;
+  padding: 6px 8px;
+  text-align: left;
+}
+.summary-table th { background: #f4f4f4; }
+
+.sales-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+.sale-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+.sale-card-info { font-size: 0.85rem; }
+.sale-card-info .date-time { font-weight: 700; }
+.sale-card-info .revenue { color: #d33; font-weight: 700; }
+
+.btn-small {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1.5px solid var(--color-line);
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.btn-small.filled { background: #1a1a1a; color: #fff; }
+
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2000;
+}
+.modal-card {
+  background: #fff; border-radius: 10px; padding: 20px;
+  width: 95%; max-width: 700px; max-height: 85vh; overflow-y: auto;
+}
+.modal-actions { display: flex; justify-content: flex-end; margin-top: 14px; }
+.hidden { display: none !important; }
+.slip-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; cursor: pointer; }
+

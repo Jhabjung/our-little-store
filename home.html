@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home - Our Little Store</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="home.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="profile-area" id="profileArea">
+    <img id="avatarImg" class="avatar-sm" src="https://placehold.co/38/9b8fb8/ffffff?text=+" alt="profile">
+    <span class="username-text" id="usernameText">Username</span>
+  </div>
+  <!-- ตัวอย่างปุ่ม After Sell ในหน้า home.html -->
+  <button class="btn-small" id="afterSellBtn" style="background:#e8f4fd; border-color:#2196F3; color:#1976D2;">After Sell</button>
+  
+</header>
+
+<main class="home-layout">
+  <!-- My store -->
+  <section class="store-section">
+    <div class="section-header">
+      <h2 data-i18n="myStore">My store</h2>
+      <button class="btn-icon" id="addStoreBtn">+</button>
+      <span class="count-text" id="myStoreCount">0 / 3</span>
+    </div>
+    <div class="store-list" id="myStoreList">
+      <div class="empty-text" data-i18n="noStore">No Store</div>
+    </div>
+  </section>
+
+  <div class="divider-line"></div>
+
+  <!-- Partner store -->
+  <section class="store-section">
+    <div class="section-header">
+      <h2 data-i18n="partnersStore">Partners store</h2>
+      <button class="btn-icon" id="addPartnerBtn">+</button>
+    </div>
+    <div class="store-list" id="partnerStoreList">
+      <div class="empty-text" data-i18n="noPartnerStore">No Partner store</div>
+    </div>
+  </section>
+</main>
+
+<!-- Modal: Create / Edit store -->
+<div class="modal-overlay hidden" id="storeModal">
+  <div class="modal-card">
+    <div class="avatar-wrap" style="border-radius:8px;">
+      <img id="storePhotoPreview" src="https://placehold.co/90/d9d9d9/888888?text=pic" alt="store" style="border-radius:8px;">
+      <button class="avatar-edit-btn" id="storePhotoEditBtn">✎</button>
+      <input type="file" id="storePhotoInput" accept="image/*" style="display:none">
+    </div>
+    <input type="text" id="storeNameInput" data-i18n-placeholder="storeNamePlaceholder" placeholder="Store name" style="width:100%;">
+    <input type="text" id="storeCodeDisplay" disabled style="width:100%; background:#f2f2f2; color:#999;">
+    <div class="store-id-note" data-i18n="storeIdNote">Random store ID can't change</div>
+    <div class="error-msg" id="storeModalError"></div>
+    <div class="modal-actions">
+      <button class="btn-small" id="storeModalCancelBtn" data-i18n="cancel">Cancel</button>
+      <button class="btn-small filled" id="storeModalSubmitBtn">Submit</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal: Add partner store -->
+<div class="modal-overlay hidden" id="partnerModal">
+  <div class="modal-card">
+    <h2 style="text-align:center;" data-i18n="partnersStoreId">Partners store ID</h2>
+    <input type="text" id="partnerCodeInput" data-i18n-placeholder="partnersStoreId" placeholder="Partners store ID" maxlength="6" style="width:100%; text-transform:uppercase;">
+    <div class="error-msg" id="partnerModalError"></div>
+    <div class="modal-actions">
+      <button class="btn-small" id="partnerModalCancelBtn" data-i18n="cancel">Cancel</button>
+      <button class="btn-small filled" id="partnerModalSubmitBtn" data-i18n="submit">Submit</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Confirm delete -->
+<div class="modal-overlay hidden" id="confirmModal">
+  <div class="modal-card">
+    <p id="confirmText" style="text-align:center;"></p>
+    <div class="modal-actions">
+      <button class="btn-small" id="confirmCancelBtn" data-i18n="cancel">Cancel</button>
+      <button class="btn-small filled" id="confirmOkBtn" style="background:#d33; border-color:#d33;" data-i18n="confirm">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Profile -->
+<div class="modal-overlay hidden" id="profileInfoModal">
+  <div class="modal-card profile-modal-card">
+    <div class="profile-avatar-row">
+      <div class="avatar-wrap">
+        <img id="profileAvatarPreview" src="https://placehold.co/90/9b8fb8/ffffff?text=+" alt="profile">
+        <button class="avatar-edit-btn" id="profileAvatarEditBtn">✎</button>
+        <input type="file" id="profileAvatarInput" accept="image/*" style="display:none">
+      </div>
+    </div>
+
+    <div class="username-row">
+      <input type="text" id="profileUsernameInput" disabled>
+      <button class="icon-btn" id="usernameEditBtn">✎</button>
+      <button class="icon-btn confirm hidden" id="usernameConfirmBtn">✓</button>
+    </div>
+    <div class="error-msg" id="usernameError"></div>
+    <div class="email-text" id="profileEmailText"></div>
+
+    <div>
+      <div class="field-label" data-i18n="language">Language</div>
+      <select class="lang-select" id="langSelect">
+        <option value="th">ไทย</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+
+    <div class="theme-section">
+      <div class="field-label" data-i18n="colorTheme">Color theme</div>
+
+      <div class="theme-preset-row">
+        <button class="btn-preset" id="presetLightBtn">☀ <span data-i18n="lightTheme">Light theme</span></button>
+        <button class="btn-preset" id="presetDarkBtn">🌙 <span data-i18n="darkTheme">Dark theme</span></button>
+      </div>
+
+      <div class="theme-row">
+        <span data-i18n="textColor">Text color</span>
+        <div class="color-swatch" id="swatchText"></div>
+      </div>
+      <div class="theme-row">
+        <span data-i18n="lineColor">Line color</span>
+        <div class="color-swatch" id="swatchLine"></div>
+      </div>
+      <div class="theme-row">
+        <span data-i18n="baseColor">Background color</span>
+        <div class="color-swatch" id="swatchBase"></div>
+      </div>
+      <div class="theme-row">
+        <span data-i18n="tabbarColor">Tab bar color</span>
+        <div class="color-swatch" id="swatchTabbar"></div>
+      </div>
+    </div>
+
+    <div class="profile-actions">
+      <button class="btn-danger-outline" id="profileLogoutBtn" data-i18n="logout">Log out</button>
+      <button class="btn-small" id="profileCloseBtn" data-i18n="close">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: HSV color picker -->
+<div class="modal-overlay hidden" id="hsvModal">
+  <div class="modal-card hsv-card">
+    <div class="hsv-preview" id="hsvPreview"></div>
+
+    <div class="hsv-slider-group">
+      <label data-i18n="hue">Hue</label>
+      <input type="range" id="hueSlider" min="0" max="360" value="0">
+    </div>
+    <div class="hsv-slider-group">
+      <label data-i18n="saturation">Saturation</label>
+      <input type="range" id="satSlider" min="0" max="100" value="0">
+    </div>
+    <div class="hsv-slider-group">
+      <label data-i18n="brightness">Brightness</label>
+      <input type="range" id="valSlider" min="0" max="100" value="0">
+    </div>
+
+    <div class="hsv-actions">
+      <button class="btn-small" id="hsvCancelBtn" data-i18n="cancel">Cancel</button>
+      <button class="btn-small filled" id="hsvConfirmBtn">✓ <span data-i18n="save">Save</span></button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="home.js"></script>
+
+
+</body>
+</html>

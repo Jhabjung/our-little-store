@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>หน้าขายของ</title>
+<link rel="stylesheet" href="sell.css">
+</head>
+<body>
+
+<header class="sell-header">
+  <button id="backToHomeBtn" class="btn-small">← กลับหน้าแรก</button>
+  <div class="store-title">
+    <img id="storeCoverImg" src="" alt="store" class="store-cover-thumb">
+    <h1 id="storeNameTitle">ชื่อร้านค้า</h1>
+  </div>
+  <button id="afterSellLinkBtn" class="btn-small">📊 After Sell</button>
+</header>
+
+<div class="store-status-banner">🟢 ร้านเปิดอยู่ — กดสินค้าเพื่อเพิ่มลงตะกร้า</div>
+
+<!-- Tab bar ชั้นที่ 2 เหมือนหน้า item.html (All + รายชื่อ Creator) -->
+<nav class="navbar-tier2" id="tier2Nav">
+  <button class="tab-item active" id="allTabBtn">All</button>
+  <!-- ปุ่ม Creator จะถูกเพิ่มด้วย JS -->
+</nav>
+
+<!-- ปุ่มสลับโหมดมุมมอง (เหมือน item.html) -->
+<div class="view-mode-switch">
+  <button class="mode-btn active" data-mode="1">☰</button>
+  <button class="mode-btn" data-mode="2">▦</button>
+  <button class="mode-btn" data-mode="3">▤</button>
+</div>
+
+<main id="itemMainContainer"></main>
+
+<!-- บาร์ตะกร้าสินค้าลอย -->
+<div id="cartFloatingBar" class="cart-floating-bar hidden">
+  🛒 ตะกร้า <span id="cartCountBadge">0</span> ชิ้น &nbsp;|&nbsp; <span id="cartTotalPreview">0</span> บาท
+</div>
+
+<!-- Modal: เลือกจำนวนสินค้าเข้าตะกร้า -->
+<div class="modal-overlay hidden" id="addToCartModal">
+  <div class="modal-card narrow">
+    <h3 id="cartModalItemName">ชื่อสินค้า</h3>
+    <p id="cartModalItemPrice" class="muted-text"></p>
+    <div class="qty-stepper">
+      <button id="cartQtyMinus" class="step-btn">-</button>
+      <input type="number" id="cartQtyInput" value="1" min="1">
+      <button id="cartQtyPlus" class="step-btn">+</button>
+    </div>
+    <div class="modal-actions">
+      <button id="cancelAddToCartBtn" class="btn-small">Cancel</button>
+      <button id="confirmAddToCartBtn" class="btn-small filled">Add ลงตะกร้า</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: สรุปตะกร้าก่อนคิดเงิน -->
+<div class="modal-overlay hidden" id="checkoutModal">
+  <div class="modal-card">
+    <h2>🧾 สรุปรายการสั่งซื้อ</h2>
+    <div id="checkoutItemList" class="checkout-list"></div>
+    <div class="checkout-summary-box">
+      <div>โปรโมชั่นที่ได้รับ: <strong id="checkoutPromoApplied">ไม่มี</strong></div>
+      <div class="total-line">ยอดที่ต้องจ่าย: <span id="checkoutTotalPrice">0</span> บาท</div>
+    </div>
+    <div class="modal-actions">
+      <button id="backToCartBtn" class="btn-small">กลับไปเลือกสินค้า</button>
+      <button id="confirmItemsBtn" class="btn-small filled">Confirm สินค้า</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: เลือกวิธีจ่ายเงิน + สลิป -->
+<div class="modal-overlay hidden" id="paymentModal">
+  <div class="modal-card narrow">
+    <h2>💳 วิธีการชำระเงิน</h2>
+    <select id="paymentMethodSelect">
+      <option value="cash">เงินสด</option>
+      <option value="transfer">โอนเงิน</option>
+    </select>
+    <div id="slipUploadContainer" class="hidden">
+      <label>ถ่ายรูป/แนบสลิปโอนเงิน:</label>
+      <input type="file" id="slipFileInput" accept="image/*">
+      <img id="slipPreviewImg" src="" alt="slip" class="hidden">
+    </div>
+    <div class="modal-actions">
+      <button id="backToCheckoutBtn" class="btn-small">ย้อนกลับ</button>
+      <button id="savePaymentBtn" class="btn-small filled">บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="sell.js"></script>
+</body>
+</html>

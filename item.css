@@ -1,0 +1,364 @@
+/* ---------- Item Page Layout ---------- */
+body {
+  display: block;
+  background: var(--color-base, #f2f0f6);
+  color: var(--color-text, #1a1a1a);
+  margin: 0;
+  padding: 0;
+}
+
+/* Tab bar ชั้น 1 */
+.navbar-tier1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--color-tabbar, #cfc0e8);
+  border-bottom: 2px solid var(--color-line, #1a1a1a);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.nav-left, .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-btn {
+  background: #fff;
+  border: 1.5px solid var(--color-line, #1a1a1a);
+  color: var(--color-text, #1a1a1a);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+.nav-btn:hover { background: rgba(0,0,0,0.05); }
+
+.search-box-wrap {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1.5px solid var(--color-line, #1a1a1a);
+  border-radius: 6px;
+  padding: 4px 10px;
+  gap: 6px;
+}
+.search-box-wrap input {
+  border: none;
+  outline: none;
+  font-size: 0.9rem;
+  background: transparent;
+  color: #333;
+}
+
+.view-mode-icons {
+  display: flex;
+  gap: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  border: 1.5px solid var(--color-line, #1a1a1a);
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: #fff;
+}
+
+/* Tab bar ชั้น 2 (เฉพาะ creator และเลื่อนได้) */
+.navbar-tier2 {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background: var(--color-base, #e4dce8);
+  border-bottom: 2px solid var(--color-line, #1a1a1a);
+  overflow-x: auto;
+  gap: 8px;
+  position: sticky;
+  top: 53px;
+  z-index: 29;
+  white-space: nowrap;
+}
+.navbar-tier2::-webkit-scrollbar { height: 4px; }
+.navbar-tier2::-webkit-scrollbar-thumb { background: var(--color-line, #1a1a1a); border-radius: 2px; }
+
+.tab-item {
+  padding: 6px 14px;
+  background: #fff;
+  border: 1.5px solid var(--color-line, #1a1a1a);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  color: var(--color-text, #1a1a1a);
+}
+.tab-item:hover, .tab-item.active {
+  background: var(--color-tabbar, #cfc0e8);
+}
+.tab-item.new-item-btn {
+  background: var(--color-line, #1a1a1a);
+  color: #fff;
+}
+
+/* แผงข้อมูลร้านแนวตั้ง (กดจาก dropdown) */
+.store-info-panel {
+  background: #fff;
+  border-bottom: 2px solid var(--color-line, #1a1a1a);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.85rem;
+}
+.store-info-panel.hidden { display: none; }
+.online-users-list { display: flex; gap: 6px; align-items: center; }
+.online-avatar {
+  width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #333; object-fit: cover;
+}
+
+/* ---------- Main Content Area ---------- */
+.item-main-container {
+  padding: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.creator-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(255,255,255,0.5);
+  border: 1.5px solid var(--color-line, #1a1a1a);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.creator-section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-bottom: 1.5px solid var(--color-line, #1a1a1a);
+  padding-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* รูปแบบการแสดงสินค้า (View Modes) */
+/* รูปแบบการแสดงสินค้า (View Modes) */
+.items-grid {
+  display: grid;
+  gap: 12px;
+}
+/* แบบที่ 1: แนวตั้ง 1 คอลัมน์ (รูปซ้าย, ข้อความขวา) */
+.items-grid.mode-1 {
+  grid-template-columns: 1fr;
+}
+/* แบบที่ 2: แนวนอน/กริดหลายคอลัมน์ (รูปบน, ข้อความล่าง) */
+.items-grid.mode-2 {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+/* แบบที่ 3: กริดย่อยหลายคอลัมน์ (รูปซ้าย, ข้อความขวา - เหมือนโหมด 1 แต่ย่อส่วน) */
+.items-grid.mode-3 {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+.item-card {
+  position: relative;
+  background: #fff;
+  border: 1.5px solid var(--color-line, #1a1a1a);
+  border-radius: 6px;
+  padding: 10px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* โหมด 2 อย่างเดียวที่ให้รูปอยู่ด้านบน ข้อความอยู่ด้านล่าง */
+.mode-2 .item-card {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* กรอบรูปในแต่ละโหมด */
+.item-img-container {
+  position: relative;
+  flex-shrink: 0;
+  width: 70px;
+  height: 70px;
+}
+.mode-2 .item-img-container {
+  width: 100%;
+  height: 140px;
+}
+/* โหมด 3 ใช้รูปขนาดกะทัดรัด (เช่น 55x55px) อยู่ด้านซ้ายเหมือนโหมด 1 */
+.mode-3 .item-img-container {
+  width: 65px;
+  height: 65px;
+  flex-shrink: 0;
+}
+.mode-3 .item-card {
+  flex-direction: row !important;
+  align-items: center !important;
+}
+.mode-3 .item-card-img {
+  width: 100%;
+  height: 100%;
+}
+
+
+.item-card-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  object-fit: cover;
+  background: #ddd;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  display: block;
+}
+
+/* ปุ่มถังขยะในโหมด 3 (ปรับขนาดให้เล็กลงนิดนึงให้เข้ากับรูป 55px) */
+.mode-3 .delete-item-badge {
+  width: 20px;
+  height: 20px;
+  font-size: 0.65rem;
+  bottom: 2px;
+  right: 2px;
+}
+
+/* จัดส่วนข้อความในการ์ด */
+.item-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.item-card-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  word-break: break-word;
+}
+.item-card-price { font-size: 0.8rem; color: #555; }
+.item-card-id { font-size: 0.7rem; color: #888; }
+.empty-creator {
+  font-size: 0.85rem;
+  color: #777;
+  font-style: italic;
+  padding: 8px 0;
+}
+
+/* Modal เพิ่มสินค้า / เพิ่ม Creator */
+.modal-card input, .modal-card select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #333;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: #fff;
+}
+/* จัดการรูปภาพสินค้าและการซ้อนไอคอนถังขยะ */
+/* จัดกรอบรูปสินค้าให้เป็น relative เพื่อให้ปุ่มถังขยะอ้างอิงตำแหน่งตามรูป */
+.item-img-container {
+  position: relative;
+  flex-shrink: 0;
+  width: 70px;
+  height: 70px;
+}
+.mode-2 .item-img-container {
+  width: 100%;
+  height: 100px;
+}
+
+.item-card-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  object-fit: cover;
+  background: #ddd;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  display: block;
+}
+/* ส่วนข้อความในโหมด 3 ให้ขยายเต็มพื้นที่ด้านขวา */
+.mode-3 .item-card-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mode-3 .item-card-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* ถ้าชื่อยาวเกินไป ให้แสดงเป็น ... ป้องกันล้น */
+}
+
+/* ปุ่มถังขยะสีขาว อยู่ที่มุมขวาล่างของรูปภาพสินค้า */
+.delete-item-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  color: #d33;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  cursor: pointer;
+  border: 1.5px solid var(--color-line, #1a1a1a);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  transition: background 0.2s, transform 0.2s;
+  z-index: 10;
+}
+.delete-item-badge:hover {
+  background: #fff0f0;
+  transform: scale(1.05);
+}
+
+/* สไตล์การ์ดโปรโมชั่นในรายการ */
+.promo-card-item {
+  background: #fff;
+  border: 1.5px solid var(--color-line, #1a1a1a);
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+.promo-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.promo-card-title {
+  font-weight: 700;
+  color: #333;
+}
+.promo-card-desc {
+  font-size: 0.8rem;
+  color: #666;
+}
+.promo-form-section.hidden {
+  display: none;
+}
+.set-item-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
